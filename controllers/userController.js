@@ -47,4 +47,6 @@ const updateuser = async(req,res) => {
 
 const deleteuser = async (req, res) => {}
 
-module.exports = {getuser, updateuser, deleteuser};
+const updatepassword =async(req,res)=>{}
+
+module.exports = {getuser, updateuser, updatepassword}

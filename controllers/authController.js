@@ -5,10 +5,10 @@ const { generateToken } = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, phone, address } = req.body;
+        const { name, email, password, phone, address, answer } = req.body;
         console.log(req.body);
         //Validate input
-        if (!name || !email || !password || !phone || !address) {
+        if (!name || !email || !password || !phone || !address || !answer) {
             return res.status(400).send({ message: 'All fields are required' });
         }
         const existingUser = await userModel.findOne({ email });
@@ -21,7 +21,8 @@ const registerUser = async (req, res) => {
             email,
             password: hash,
             phone,
-            address
+            address,
+            answer
         });
 
         await user.save();
@@ -63,6 +64,7 @@ const login = async (req, res) => {
                 email: user.email,
                 phone: user.phone,
                 address: user.address,
+                answer : user.answer,
                 role: user.role,
                 profilePicture: user.profilePicture
             },token,
