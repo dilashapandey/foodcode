@@ -2,26 +2,33 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3000; 
-const dotenv = require('dotenv');
 
 const cors = require('cors');
 const morgan = require('morgan');
 
+const connectDB = require('./config/database');
+// Connect to MongoDB  
+connectDB();
+
 //middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(morgan('dev'));
-const connectDB = require('./config/database');
-// Connect to MongoDB  
-connectDB();
 
 //routes
 const testRoute = require('./routes/testRoute');
+const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
+
 app.use('/api/test', testRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 
 app.get ('/', (req, res) => { 
     res.send('Hello World!')
