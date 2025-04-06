@@ -26,11 +26,13 @@ const testRoute = require('./routes/testRoute');
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const restaurantRoute = require('./routes/restaurantRoute');
+const categoryRoute = require('./routes/categoryRoute');
 
 app.use('/api/test', testRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use('/api/restaurant',restaurantRoute);
+app.use('/api/category',categoryRoute);
 
 app.get ('/', (req, res) => { 
     res.send('Hello World!')
