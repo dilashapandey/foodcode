@@ -77,10 +77,23 @@ const updateRestaurant = async (req, res) => {
         return res.status(400).send({ message: "Restaurant ID is required" });
     }
     try {
-        const restaurant = await restaurantModel.findByIdAndUpdate(restaurantId, req.body, { new: true });
+        const restaurant = await restaurantModel.findByIdAndUpdate(restaurantId);
         if (!restaurant) {
             return res.status(404).send({ message: "Restaurant not found" });
         }
+        const {name,imageurl,food,time,pickup,delivery,isopen,logurl,rating,ratingCount,coords} = req.body;
+        if (name) restaurant.name = name;  
+        if (imageurl) restaurant.imageurl = imageurl;
+        if (food) restaurant.food = food;
+        if (time) restaurant.time = time;
+        if (pickup) restaurant.pickup = pickup;
+        if (delivery) restaurant.delivery = delivery;
+        if (isopen) restaurant.isopen = isopen;
+        if (logurl) restaurant.logurl = logurl;
+        if (rating) restaurant.rating = rating;
+        if (ratingCount) restaurant.ratingCount = ratingCount;
+        if (coords) restaurant.coords = coords;
+        await restaurant.save();
         res.status(200).send({
             message: "Restaurant updated successfully",
             restaurant,

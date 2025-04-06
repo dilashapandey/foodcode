@@ -1,4 +1,3 @@
-const restaurantModel = require('../models/restaurantModel');
 const express = require('express');
 const router = express.Router();
 const { getAllRestaurant, getRestaurant, addRestaurant, updateRestaurant, deleteRestaurant } = require('../controllers/reataurantController');
