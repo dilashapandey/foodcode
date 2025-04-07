@@ -13,6 +13,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        validate: {
+            validator: function (value) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(value);
+            },
+            message:
+                'Password must be at least 8 characters and include uppercase, lowercase, number, and special character',
+        },
     },
     phone: {
         type: String,
@@ -21,13 +28,13 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
     },
-    answer:{
-        type:String,
+    answer: {
+        type: String,
         required: true,
     },
     role: {
         type: String,
-       // required: true,
+        // required: true,
         enum: ['admin', 'user'],
         default: 'user',
     },
@@ -35,7 +42,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://stock.adobe.com/search/images?k=default+profile+picture',
     },
-    },
+},
     {
         timestamps: true
     }

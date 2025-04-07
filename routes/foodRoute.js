@@ -4,6 +4,7 @@ const {
     getAllFood, 
     createFood, 
     getFoodById, 
+    getFoodByRestaurentId,
     updateFood, 
     deleteFood } = require('../controllers/foodController');
 
@@ -18,6 +19,8 @@ router.post('/create',isLoggedIn, createFood);
 router.get('/all', getAllFood);
 
 router.get('/:id', getFoodById);
+
+router.get('/restaurant/:id', getFoodByRestaurentId);
 
 router.put('/:id',isLoggedIn, updateFood);
 
