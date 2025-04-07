@@ -59,6 +59,23 @@ const getFoodById = async (req, res) => {
     }
 }
 
+const getFoodByRestaurentId = async (req, res) => {
+    const restaurantId = req.params.id;
+    if (!restaurantId) {
+        return res.status(404).send({ message: 'Restaurant Id is required' });
+    }
+    try {
+        const food = await foodModel.find({ restaurant: restaurantId })
+        if (!food) {
+            return res.status(404).send({ message: 'No food found for this restaurant' });
+        }
+        res.status(200).send({ message: 'Food retrieved successfully', food });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({message:error.message});
+    }
+}
+
 const updateFood = async (req, res) => {
     const foodId = req.params.id;
     if (!foodId) {
@@ -126,6 +143,7 @@ module.exports = {
     createFood, 
     getAllFood,
     getFoodById, 
+    getFoodByRestaurentId,
     updateFood, 
     deleteFood
 };

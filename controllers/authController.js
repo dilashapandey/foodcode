@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateToken } = require("../utils/generateToken");
 
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
 const registerUser = async (req, res) => {
     try {
         const { name, email, password, phone, address, answer } = req.body;
@@ -15,6 +17,14 @@ const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).send({ message: 'User already exists' });
         }
+
+        if (!strongPasswordRegex.test(password)) {
+            return res.status(400).send({
+              message:
+                'Password must include at least 8 characters, uppercase, lowercase, number, and special character.',
+            });
+          }
+      
         const hash = await bcrypt.hash(password, 10);
         const user = await userModel.create({
             name,
@@ -37,6 +47,46 @@ const registerUser = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ message: 'Server error' });
+    }
+}
+
+const adminregister = async (req, res) => {
+    try {
+        const { name, email, password, phone, address, answer } = req.body;
+        if (!name || !email || !password || !phone || !address || !answer) {
+            return res.status(400).send({ message: 'All fields are required' });
+        }
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.status(400).send({ message: 'User already exists' });
+        }
+        if (!strongPasswordRegex.test(password)) {
+            return res.status(400).send({
+              message:
+                'Password must include at least 8 characters, uppercase, lowercase, number, and special character.',
+            });
+          }
+      
+        const hash = await bcrypt.hash(password, 10);
+        const admin = await userModel.create({
+            name,
+            email,
+            password: hash,
+            phone,
+            address,
+            answer,
+            role: 'admin'
+        });
+        await admin.save();
+        const token = generateToken(admin);
+        res.cookie('token', token);
+        res.status(201).send({
+            admin,token,
+            message: 'Admin created successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Server error' });
     }
 }
 
@@ -85,4 +135,4 @@ const logout = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, login, logout};
+module.exports = { registerUser,adminregister, login, logout};
