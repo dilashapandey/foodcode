@@ -28,6 +28,7 @@ const userRoute = require('./routes/userRoute');
 const restaurantRoute = require('./routes/restaurantRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const foodRouter = require('./routes/foodRoute');
+const orderRoute = require('./routes/orderRoute');
 
 app.use('/api/test', testRoute);
 app.use('/api/auth', authRoute);
@@ -35,6 +36,7 @@ app.use('/api/user', userRoute);
 app.use('/api/restaurant',restaurantRoute);
 app.use('/api/category',categoryRoute);
 app.use('/api/food',foodRouter);
+app.use('/api/order', orderRoute);
 
 app.get ('/', (req, res) => { 
     res.send('Hello World!')
